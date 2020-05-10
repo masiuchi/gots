@@ -7,7 +7,6 @@ import (
 	"regexp"
 	"time"
 
-	"github.com/leekchan/timeutil"
 	"github.com/masiuchi/gots"
 )
 
@@ -51,18 +50,14 @@ func main() {
 	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
 		if args.Rel == false {
+			var timeString string
+			now := time.Now()
 			if args.IsHires() {
-				now := time.Now()
-				microseconds := now.UnixNano() % int64(1000000000) / int64(1000)
-				s := fmt.Sprintf("%06d", microseconds)
-				r := regexp.MustCompile(`\%\.([Ss])`)
-				f := r.ReplaceAllString(args.Format, "%$1."+s)
-				fmt.Print(timeutil.Strftime(&now, f))
+				timeString = gots.GetMicroTimeString(&now, args.Format)
 			} else {
-				t := time.Now()
-				fmt.Print(timeutil.Strftime(&t, args.Format))
+				timeString = gots.GetTimeString(&now, args.Format)
 			}
-			fmt.Println("", scanner.Text())
+			fmt.Println(timeString, scanner.Text())
 		} else {
 			text := r2.ReplaceAllStringFunc(scanner.Text(), repl)
 			fmt.Println(text)
