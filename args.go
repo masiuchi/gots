@@ -1,5 +1,7 @@
 package gots
 
+import "regexp"
+
 // Args ...
 type Args struct {
 	Rel       bool
@@ -18,16 +20,22 @@ func NewArgs() *Args {
 }
 
 // ParseArgs ...
-func (a *Args) ParseArgs(args []string) {
-	for i, v := range args {
+func (args *Args) ParseArgs(argsSlice []string) {
+	for i, v := range argsSlice {
 		if i == 0 {
 			continue
 		}
 		if v == "-r" {
-			a.Rel = true
+			args.Rel = true
 		} else if len(v) > 0 {
-			a.UseFormat = true
-			a.Format = v
+			args.UseFormat = true
+			args.Format = v
 		}
 	}
+}
+
+// IsHires ...
+func (args *Args) IsHires() bool {
+	r := regexp.MustCompile(`\%\.([Ss])`)
+	return r.MatchString(args.Format)
 }
