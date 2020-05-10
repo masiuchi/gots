@@ -13,10 +13,10 @@ func main() {
 	args := gots.NewArgs()
 	args.ParseArgs(os.Args)
 
-	var relTime *(gots.RelativeTime)
-	if args.Rel {
-		relTime = gots.NewRelativeTime(args.UseFormat, args.Format)
-	}
+	// var relTime *(gots.RelativeTime)
+	// if args.Rel {
+	// 	relTime = gots.NewRelativeTime(args.UseFormat, args.Format)
+	// }
 
 	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
@@ -30,8 +30,9 @@ func main() {
 			}
 			fmt.Println(timeString, scanner.Text())
 		} else {
-			text := relTime.GetRelativeTimeString(scanner.Text())
-			fmt.Println(text)
+			panic("-r option is not implemented yet")
+			// text := relTime.GetRelativeTimeString(scanner.Text())
+			// fmt.Println(text)
 		}
 	}
 
